@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Users information</title>
+    </h:head>
+    <h:body>
+        <h:form id="frmUsers">
+            <h:dataTable value="#{usersCtlr.users}" var="user">
+                <h:column>    				
+                    <f:facet name="header">ID</f:facet>    				
+                        #{user.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">User name</f:facet>
+                        #{user.username}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Type</f:facet>
+                        #{user.type}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Currency</f:facet>
+                        #{user.type == "Admin" ? " - - " : user.currency}
+                </h:column>
+                <h:column>    				
+                    <f:facet name="header">Balance</f:facet>    				
+                        #{user.type == "Admin" ? " - - " : user.balance}
+                </h:column>
+            </h:dataTable>
+            
+            <h:button value="Go back" outcome="main"/>
+        </h:form>
+    </h:body>
+</html>

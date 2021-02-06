@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>All your transactions</title>
+    </h:head>
+    <h:body>
+        <h:form id="frmTrans">
+            <h:dataTable value="#{transactionsCtlr.transactions}" var="transaction">
+                <h:column>    				
+                    <f:facet name="header">ID</f:facet>    				
+                        #{transaction.id}
+                </h:column>
+
+                <!-- Not showed for Admin User-->
+                <h:column rendered="#{!transactionsCtlr.showedForAdmin}">
+                    <f:facet name="header">Type</f:facet>
+                        #{transactionsCtlr.typeTransaction(transaction.id)}
+                </h:column>
+                <h:column rendered="#{!transactionsCtlr.showedForAdmin}">
+                    <f:facet name="header">To/From User id</f:facet>
+                        #{transactionsCtlr.tofromUser(transaction.id)}
+                </h:column>
+
+                <!-- Showed for Admin User-->
+                 <h:column rendered="#{transactionsCtlr.showedForAdmin}">
+                    <f:facet name="header">Type</f:facet>
+                        #{transaction.type == 1 ? 'Send Money' : 'Request money'}
+                </h:column>
+                <h:column rendered="#{transactionsCtlr.showedForAdmin}">
+                    <f:facet name="header">To User id</f:facet>
+                        #{transaction.userSend}
+                </h:column>
+                <h:column rendered="#{transactionsCtlr.showedForAdmin}">
+                    <f:facet name="header">From User id</f:facet>
+                        #{transaction.userReceive}
+                </h:column>
+
+                <h:column>    				
+                    <f:facet name="header">Date</f:facet>    				
+                        #{transaction.created}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Status</f:facet>
+                        #{transactionsCtlr.toStatusString(transaction.status)}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Amount</f:facet>
+                        #{transaction.amount} #{transaction.currency}
+                </h:column>
+            </h:dataTable>
+        
+            <h:button value="Go back" outcome="main"/>
+        </h:form>
+    </h:body>
+</html>

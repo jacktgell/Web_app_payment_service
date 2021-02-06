@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Account information</title>
+    </h:head>
+    <h:body>
+        <h:form id="frmMain">
+            <div>
+                <h2> Welcome #{mainCtlr.userName}</h2>
+
+                <h:panelGroup rendered="#{mainCtlr.user.type == 'User'}">
+
+                    <h3> Your balance is: #{mainCtlr.user.balance} #{mainCtlr.user.getCurrency()}</h3>
+
+                    <p>What do you want to do?</p>
+                    <h:button value="View transactions" outcome="transactions"/>
+                    <h:button value="Send money" outcome="send"/>
+                    <h:button value="Request payment" outcome="request"/>
+                    <h:commandButton value="Exit" action="#{mainCtlr.exit()}"/>
+
+                    <br/>
+
+                    <h3>Pending requests</h3>
+                    <h:commandButton value="Get requests">
+                        <f:ajax render="@form" listener="#{mainCtlr.getRequests()}"/>
+                    </h:commandButton>
+                    <h:dataTable id="tblRequest" value="#{mainCtlr.transactions}" var="transaction"  >
+                        <h:column>    				
+                            <f:facet name="header">ID</f:facet>    				
+                                #{transaction.id}
+                        </h:column>
+                        <!--<h:column>
+                            <f:facet name="header">Type</f:facet>
+                                # {transactionsCtlr.typeTransaction(transaction.id)}
+                        </h:column>-->
+                        <h:column>
+                            <f:facet name="header">From User id</f:facet>
+                                #{transaction.userSend}
+                        </h:column>
+
+                        <h:column>    				
+                            <f:facet name="header">Date</f:facet>    				
+                                #{transaction.created}
+                        </h:column>
+                        <!--<h:column>
+                            <f:facet name="header">Status</f:facet>
+                                # {transaction.status == 1 ? 'Pendent' : 'Completed'}
+                        </h:column>-->
+                        <h:column>
+                            <f:facet name="header">Amount</f:facet>
+                                #{transaction.amount}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Currency</f:facet>
+                                #{transaction.currency}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Action</f:facet>
+                            <h:commandButton value="Accept" >
+                                <f:ajax render="@form" listener="#{mainCtlr.acceptRequest(transaction)}"/>
+                            </h:commandButton>
+
+                            <h:commandButton value="Reject" >
+                                <f:ajax render="@form" listener="#{mainCtlr.rejectRequest(transaction)}"/>
+                            </h:commandButton>
+                        </h:column>
+                    </h:dataTable>
+                    <h:outputLabel id="olbMessage" value="#{mainCtlr.message}"/>
+
+
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{mainCtlr.user.type == 'Admin'}">
+                    <p>What do you want to do?</p>
+                    <h:button value="View transactions" outcome="transactions"/>
+                    <h:button value="See User accounts" outcome="users"/>
+                    <h:button value="Register Admin" outcome="register"/>
+                    
+                    
+                    <h:commandButton value="Exit" action="#{mainCtlr.exit()}"/>
+                </h:panelGroup>
+
+
+
+            </div>
+        </h:form>
+    </h:body>
+</html>
